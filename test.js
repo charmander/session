@@ -100,6 +100,7 @@ t('a user with an invalid session token is given a new guest session', async ses
 	assertNewSession(await sessions.getAsync(''));
 	assertNewSession(await sessions.getAsync('short'));
 	assertNewSession(await sessions.getAsync('long' + 'x'.repeat(100)));
+	assertNewSession(await sessions.getAsync('a'.repeat(29) + '"'));
 });
 
 t('a user with an expired session is given a new guest session', async sessions => {

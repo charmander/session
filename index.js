@@ -29,6 +29,10 @@ const getCsrf = token => {
 	return tokenifyHex(csrf);
 };
 
+const isGuestToken = token =>
+	token.length === CSRF_LENGTH &&
+	/^[a-p]+$/.test(token);
+
 class Session {
 	constructor({token, storageKey, userId, updated}) {
 		this.newToken = updated ? token : null;
@@ -81,12 +85,14 @@ class SessionBox {
 			throw new TypeError('Callback must be a function');
 		}
 
-		if (token == null || (token.length !== CSRF_LENGTH && token.length !== USER_TOKEN_LENGTH)) {
+		let guest;
+
+		if (token == null || (!(guest = isGuestToken(token)) && token.length !== USER_TOKEN_LENGTH)) {
 			this._create(null, callback);
 			return;
 		}
 
-		if (token.length === CSRF_LENGTH) {
+		if (guest) {
 			process.nextTick(callback, null, new Session({
 				token,
 				storageKey: null,
