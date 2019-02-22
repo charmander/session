@@ -20,7 +20,7 @@
 
 - `SessionBox#update(session, newUserId, callback)`
 
-  Updates a session obtained from `SessionBox#get` with a new user id. The session token will always change after this operation, and the old session will be invalidated. Pass `null` to update to a guest session.
+  Updates a session obtained from `SessionBox#get` with a new user id. The session token will always change after this operation, and the old session will be invalidated if it’s not a guest session. Pass `null` to update to a guest session.
 
 
 ### Sessions
